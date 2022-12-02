@@ -25,7 +25,7 @@ set ::env(VERILOG_FILES) "\
 	$::env(DESIGN_DIR)/../../verilog/rtl/models_pack.v \
 	$::env(DESIGN_DIR)/../../verilog/rtl/wrapper_gf180.v"
 
-set ::env(DESIGN_IS_CORE) 0
+set ::env(DESIGN_IS_CORE) 1
 
 ## Clock configurations
 set ::env(CLOCK_PORT) {io_in[5]}
@@ -35,9 +35,10 @@ set ::env(CLOCK_PERIOD) 100
 set ::env(PL_MAX_DISPLACEMENT_X) 1000
 set ::env(PL_MAX_DISPLACEMENT_Y) 1000
 set ::env(GLB_RESIZER_TIMING_OPTIMIZATIONS) 0
+set ::env(GRT_ALLOW_CONGESTION) 1
 
 set ::env(FP_SIZING) absolute
-set ::env(DIE_AREA) "0 0 1500 1500"
+set ::env(DIE_AREA) "0 0 1700 1700"
 
 set ::env(FP_PIN_ORDER_CFG) $::env(DESIGN_DIR)/pin_order.cfg
 set ::env(MACRO_PLACEMENT_CFG) $::env(DESIGN_DIR)/macro.cfg
@@ -74,7 +75,7 @@ set ::env(EXTRA_GDS_FILES) "[glob $::env(DESIGN_DIR)/macros/gds/*.gds] $::env(DE
 set ::env(FP_PDN_CHECK_NODES) 0
 
 # set ::env(PL_BASIC_PLACEMENT) 0
-set ::env(PL_TARGET_DENSITY) 0.45
+set ::env(PL_TARGET_DENSITY) 0.5
 
 set ::env(FP_CORE_UTIL) 40
 
@@ -94,3 +95,14 @@ set ::env(GND_NETS) [list {vss}]
 set ::env(DIODE_INSERTION_STRATEGY) 4 
 # If you're going to use multiple power domains, then disable cvc run.
 set ::env(RUN_CVC) 1
+
+# FP_PDN_HPITCH_MULT is an integer. Minimum value is 0.
+set ::env(FP_PDN_HPITCH_MULT) 1
+
+##
+# PDN Vertical Pitch. Can be changed to any value.
+set ::env(FP_PDN_VPITCH) 90
+
+##
+# PDN vertical Offset. Can be changed to any value.
+set ::env(FP_PDN_VOFFSET) 5
