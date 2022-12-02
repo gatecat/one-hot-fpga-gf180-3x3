@@ -19,21 +19,61 @@ set ::env(STD_CELL_LIBRARY) "gf180mcu_fd_sc_mcu7t5v0"
 set ::env(DESIGN_NAME) user_proj_example
 
 set ::env(VERILOG_FILES) "\
-	$::env(CARAVEL_ROOT)/verilog/rtl/defines.v \
-	$::env(DESIGN_DIR)/../../verilog/rtl/user_proj_example.v"
+	$::env(DESIGN_DIR)/../../verilog/rtl/defines.v \
+	$::env(DESIGN_DIR)/../../verilog/rtl/eFPGA_top.v \
+	$::env(DESIGN_DIR)/../../verilog/rtl/fabric.v \
+	$::env(DESIGN_DIR)/../../verilog/rtl/models_pack.v \
+	$::env(DESIGN_DIR)/../../verilog/rtl/wrapper_gf180.v"
 
 set ::env(DESIGN_IS_CORE) 0
 
-set ::env(CLOCK_PORT) "wb_clk_i"
-set ::env(CLOCK_NET) "counter.clk"
-set ::env(CLOCK_PERIOD) "24.0"
+## Clock configurations
+set ::env(CLOCK_PORT) {io_in[5]}
+set ::env(CLOCK_NET) {io_in[5]}
+set ::env(CLOCK_PERIOD) 100
+
+set ::env(PL_MAX_DISPLACEMENT_X) 1000
+set ::env(PL_MAX_DISPLACEMENT_Y) 1000
+set ::env(GLB_RESIZER_TIMING_OPTIMIZATIONS) 0
 
 set ::env(FP_SIZING) absolute
-set ::env(DIE_AREA) "0 0 900 600"
+set ::env(DIE_AREA) "0 0 1500 1500"
 
 set ::env(FP_PIN_ORDER_CFG) $::env(DESIGN_DIR)/pin_order.cfg
+set ::env(MACRO_PLACEMENT_CFG) $::env(DESIGN_DIR)/macro.cfg
 
-set ::env(PL_BASIC_PLACEMENT) 0
+set ::env(FP_PDN_MACRO_HOOKS) "\
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X1Y0_N_term_single vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X2Y0_N_term_single vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X3Y0_N_term_single vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X0Y1_W_IO vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X1Y1_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X2Y1_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X3Y1_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X4Y1_E_IO vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X0Y2_W_IO vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X1Y2_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X2Y2_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X3Y2_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X4Y2_E_IO vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X0Y3_W_IO vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X1Y3_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X2Y3_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X3Y3_LUT4AB vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X4Y3_E_IO vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X1Y4_S_term_single vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X2Y4_S_term_single vdd vss vdd vss, \
+    Inst_eFPGA_top.Inst_eFPGA.Tile_X3Y4_S_term_single vdd vss vdd vss"
+
+set ::env(VERILOG_FILES_BLACKBOX) [glob $::env(DESIGN_DIR)/macros/verilog/*.v]
+
+set ::env(EXTRA_LEFS) "[glob $::env(DESIGN_DIR)/macros/lef/*.lef] $::env(DESIGN_DIR)/bitcell/gf180mcu_fpga_bitmux.lef"
+
+set ::env(EXTRA_GDS_FILES) "[glob $::env(DESIGN_DIR)/macros/gds/*.gds] $::env(DESIGN_DIR)/bitcell/gf180mcu_fpga_bitmux.gds"
+
+set ::env(FP_PDN_CHECK_NODES) 0
+
+# set ::env(PL_BASIC_PLACEMENT) 0
 set ::env(PL_TARGET_DENSITY) 0.45
 
 set ::env(FP_CORE_UTIL) 40

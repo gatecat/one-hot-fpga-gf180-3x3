@@ -50,18 +50,18 @@ def main():
 
     for v in fab_verilog:
         copy_verilog(f"{fab_root}/fabric_generator/verilog_output/{v}")
-    copy_verilog(f"{fab_root}/fabric_generator/fabulous_top_wrapper_temp/wrapper_gf180.v")
+    # copy_verilog(f"{fab_root}/fabric_generator/fabulous_top_wrapper_temp/wrapper_gf180.v")
 
-    pathlib.Path("openlane/user_project_wrapper/macros/lef").mkdir(parents=True, exist_ok=True)
-    pathlib.Path("openlane/user_project_wrapper/macros/gds").mkdir(parents=True, exist_ok=True)
-    pathlib.Path("openlane/user_project_wrapper/macros/verilog").mkdir(parents=True, exist_ok=True)
+    # pathlib.Path("openlane/user_project_example/macros/lef").mkdir(parents=True, exist_ok=True)
+    # pathlib.Path("openlane/user_project_example/macros/gds").mkdir(parents=True, exist_ok=True)
+    # pathlib.Path("openlane/user_project_example/macros/verilog").mkdir(parents=True, exist_ok=True)
 
-    for tile in os.listdir(build_dir):
-        if not os.path.isdir(f"{build_dir}/{tile}"):
-            continue
-        shutil.copy(f"{build_dir}/{tile}/runs/build_tile/results/final/lef/{tile}.lef", "openlane/user_project_wrapper/macros/lef")
-        shutil.copy(f"{build_dir}/{tile}/runs/build_tile/results/final/gds/{tile}.gds", "openlane/user_project_wrapper/macros/gds")
-        shutil.copy(f"{build_dir}/{tile}/src/{tile}_tile.v", "openlane/user_project_wrapper/macros/verilog")
+    # for tile in os.listdir(build_dir):
+    #     if not os.path.isdir(f"{build_dir}/{tile}"):
+    #         continue
+    #     shutil.copy(f"{build_dir}/{tile}/runs/build_tile/results/final/lef/{tile}.lef", "openlane/user_project_example/macros/lef")
+    #     shutil.copy(f"{build_dir}/{tile}/runs/build_tile/results/final/gds/{tile}.gds", "openlane/user_project_example/macros/gds")
+    #     shutil.copy(f"{build_dir}/{tile}/src/{tile}_tile.v", "openlane/user_project_example/macros/verilog")
 
 if __name__ == '__main__':
     main()

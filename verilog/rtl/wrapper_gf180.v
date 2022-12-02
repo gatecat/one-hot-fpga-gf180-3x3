@@ -16,16 +16,10 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-module user_project_wrapper(
+module user_proj_example (
 `ifdef USE_POWER_PINS
-    inout vdda1,	// User area 1 3.3V supply
-    inout vdda2,	// User area 2 3.3V supply
-    inout vssa1,	// User area 1 analog ground
-    inout vssa2,	// User area 2 analog ground
-    inout vccd1,	// User area 1 1.8V supply
-    inout vccd2,	// User area 2 1.8v supply
-    inout vssd1,	// User area 1 digital ground
-    inout vssd2,	// User area 2 digital ground
+    inout vdd,	// power
+    inout vss,	// ground
 `endif
     // Wishbone Slave ports (WB MI A)
     input wb_clk_i,
@@ -49,17 +43,6 @@ module user_project_wrapper(
     output [`MPRJ_IO_PADS-1:0] io_out,
     output [`MPRJ_IO_PADS-1:0] io_oeb,
 
-    // Analog (direct connection to GPIO pad---use with caution)
-    // Note that analog I/O is not available on the 7 lowest-numbered
-    // GPIO pads, and so the analog_io indexing is offset from the
-    // GPIO indexing by 7 (also upper 2 GPIOs do not have analog_io).
-    inout [`MPRJ_IO_PADS-10:0] analog_io,
-
-    // Independent clock (on independent integer divider)
-    input   user_clock2,
-
-    // User maskable interrupt signals
-    output [2:0] user_irq
 );
 	assign wbs_ack_o = 1'b0;
 	assign wbs_dat_o = 32'b0;
@@ -73,8 +56,8 @@ module user_project_wrapper(
     wire rs_strobe = io_in[10];
     wire global_oe = io_in[11];
 
-    localparam NumberOfRows = 6;
-    localparam NumberOfCols = 8;
+    localparam NumberOfRows = 3;
+    localparam NumberOfCols = 6;
     localparam FrameBitsPerRow = 32;
     localparam MaxFramesPerCol = 36;
 
@@ -131,9 +114,9 @@ module user_project_wrapper(
     );
 
     eFPGA_top Inst_eFPGA_top(
-        .I_top(io_out[37:14]),
-        .T_top(io_oeb[37:14]),
-        .O_top(io_in[37:14]),
+        .I_top(io_out[37:26]),
+        .T_top(io_oeb[37:26]),
+        .O_top(io_in[37:26]),
         .CLK(io_in[5]),
         .OutputEnable(global_oe),
         .FrameRegister(fdr),
